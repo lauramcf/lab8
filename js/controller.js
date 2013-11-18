@@ -1,3 +1,4 @@
+
 /* controller.js
     Controller for Shopping Cart page
 */
@@ -27,6 +28,11 @@ $(function(){
 		container: $('.movies-container')
 	});
 
+
+	var cartJSON = localStorage.getItem('cart');
+	if (cartJSON && cartJSON.length > 0) {
+	    cartModel.setItems(JSON.parse(cartJSON));
+	}
 	moviesView.on('addToCart', function(data){
 	    var movie = moviesModel.getItem(data.movieID);
 	    if (!movie)
@@ -41,6 +47,16 @@ $(function(){
 	    });
 	}); //addToCart event
 
+
 	moviesModel.refresh();
+
+	$('.place-order').click(function(){
+		var value = cartModel.toJSON();
+		console.log(value);
+	});
+
+	cartModel.on('change', function(){
+    localStorage.setItem('cart', cartModel.toJSON());
+});
 }); //doc ready()
 
